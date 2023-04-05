@@ -70,7 +70,7 @@ const App: Component = () => {
               <div class={`bg-light p-2 mx-2 ${task.completed && 'text-decoration-line-through text-success'}`}>
                 {task.text}
               </div>
-              <input type="checkbox" role="button" class="form-check-input h-auto px-3" onClick={() => { toggleStatus(task.id) }} />
+              <input type="checkbox" role="button" class="form-check-input h-auto px-3" checked={task.completed} onClick={() => { toggleStatus(task.id) }} />
             </div>
           )}
         </For>
