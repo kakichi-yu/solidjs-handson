@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js';
+import { Component, For, createSignal } from 'solid-js';
 
 // import logo from './logo.svg';
 // import styles from './App.module.css';
@@ -11,6 +11,11 @@ const App: Component = () => {
     completed: boolean
   }
 
+  /**
+   * Hook
+   * 2つの変数（関数）と配列を引数にもつcreateSignal()を返します
+   * taskListも関数であることに注意
+   */
   const [taskList, setTaskList] = createSignal([] as Task[])
 
   const addTask = (e: Event) => {
@@ -33,6 +38,16 @@ const App: Component = () => {
     setTaskList(newTaskList)
   }
 
+  const toggleStatus = (taskId: string) => {
+    const newTaskList = taskList().map((task) => {
+      if (task.id === taskId) {
+        return { ...task, completed: !task.completed }
+      }
+      return task
+    })
+    setTaskList(newTaskList)
+  }
+
   return (
     <div class="container mt-5 text-center">
       <h1 class="mb-4">What TODO!</h1>
@@ -47,11 +62,18 @@ const App: Component = () => {
 
       <div>
         <h4 class="text-muted mb-4">Tasks</h4>
-        <div class="row row-cols-3 mb-3 justify-content-center">
-          <button class="btn btn-danger w-auto">X</button>
-          <div class="bg-light p-2 mx-2">Push code to GitHub</div>
-          <input type="checkbox" role="button" class="form-check-input h-auto px-3" />
-        </div>
+
+        <For each={taskList()}>
+          {(task: Task) => (
+            <div class="row row-cols-3 mb-3 justify-content-center">
+              <button class="btn btn-danger w-auto" onClick={() => deleteTask(task.id)}>X</button>
+              <div class={`bg-light p-2 mx-2 ${task.completed && 'text-decoration-line-through text-success'}`}>
+                {task.text}
+              </div>
+              <input type="checkbox" role="button" class="form-check-input h-auto px-3" onClick={() => { toggleStatus(task.id) }} />
+            </div>
+          )}
+        </For>
       </div>
     </div>
   );
