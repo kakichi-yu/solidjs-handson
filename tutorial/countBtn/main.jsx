@@ -3,7 +3,7 @@ import { createSignal } from "solid-js";
 
 function Counter() {
   const [count, setCount] = createSignal(0);
-  ceateEffect(() => {
+  createEffect(() => {
     console.log("The count is now", count());
   });
 
